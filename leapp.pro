@@ -29,3 +29,8 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 HEADERS += \
 	leapp.h \
     leapptools.h
+
+RESOURCES += \
+    res.qrc
+
+DISTFILES +=

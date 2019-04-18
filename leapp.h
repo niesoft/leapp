@@ -20,10 +20,16 @@ public:
 	void show();
 	QWebEngineView *view;
 	LEAppTools tools;
-//	QSystemTrayIcon *tray;
+	QSystemTrayIcon *tray;
+	void setTrayIcon(QIcon icon);
+	void setTray();
+	void setWindowIcon(QIcon icon);
+	void setWindowTitle(QString title);
 
 	void javaScriptAlert(const QUrl &securityOrigin, const QString &message);
 	void javaScriptConsoleMessage(JavaScriptConsoleMessageLevel level, const QString &message, int lineNumber, const QString &sourceID);
+public slots:
+	void trayClick(QSystemTrayIcon::ActivationReason reason);
 };
 
 #endif // LEAAP_H
