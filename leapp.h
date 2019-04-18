@@ -27,13 +27,21 @@ public:
 	void setTrayIcon(QIcon icon);
 	void setWindowIcon(QIcon icon);
 	void setWindowTitle(QString title);
+	void setWindowStyle(int style = 0);
 	void showTrayMessage(QString title, QString msg, int type = 0, int msec = 10000);
+	void setPath(QString path);
 
 	void javaScriptAlert(const QUrl &securityOrigin, const QString &message);
 	void javaScriptConsoleMessage(JavaScriptConsoleMessageLevel level, const QString &message, int lineNumber, const QString &sourceID);
 public slots:
 	void trayClick(QSystemTrayIcon::ActivationReason reason);
 	void trayMenuClick(QAction *action);
+	void closeEvent(QCloseEvent * event);
+	void resizeEvent(QResizeEvent * event);
+private slots:
+
+protected:
+
 };
 
 #endif // LEAAP_H

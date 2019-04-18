@@ -29,3 +29,7 @@ bool LEAppTools::isOnline()
 	int exitCode = QProcess::execute("ping", QStringList() << parameter << "198.41.0.4");
 	return (exitCode == 0) ? true : false;
 }
+QString getPath()
+{
+	return "";
+}

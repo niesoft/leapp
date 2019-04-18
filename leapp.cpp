@@ -20,12 +20,19 @@ void leapp::show()
 	view->show();
 	view->setMinimumSize(220, 140);
 	view->resize(640, 480);
+	view->setContextMenuPolicy(Qt::NoContextMenu);
+
 
 	QPixmap pix(":/icons/icon64.png");
 	setTrayIcon(pix);
 	setWindowIcon(pix);
 	setWindowTitle("Leapp v0.0");
 	setTray();
+}
+
+void leapp::setPath(QString path)
+{
+	tools.path = path;
 }
 
 void leapp::setTray()
@@ -39,10 +46,6 @@ void leapp::setTray()
 			menu->addAction(new QAction(menulist[i], this));
 		}
 	}
-//	new QAction("Настройка", this);
-//	menu->addAction(setupAction);
-//	menu->addSeparator();
-//	menu->addAction(quitAction);
 	tray->setContextMenu(menu);
 	tray->show();
 }
@@ -62,7 +65,26 @@ void leapp::setWindowTitle(QString title)
 {
 	view->setWindowTitle(title);
 }
-
+void leapp::setWindowStyle(int style)
+{
+	if (style == 1) {
+		view->setWindowFlags(Qt::Dialog);
+	} else if (style == 2) {
+		view->setWindowFlags(Qt::Sheet);
+	} else if (style == 3) {
+		view->setWindowFlags(Qt::Drawer);
+	} else if (style == 4) {
+		view->setWindowFlags(Qt::Popup);
+	} else if (style == 5) {
+		view->setWindowFlags(Qt::Tool);
+	} else if (style == 6) {
+		view->setWindowFlags(Qt::ToolTip);
+	} else if (style == 7) {
+		view->setWindowFlags(Qt::SplashScreen);
+	} else {
+		view->setWindowFlags(Qt::Window);
+	}
+}
 // Событие на alert();
 void leapp::javaScriptAlert(const QUrl &securityOrigin, const QString &message)
 {
@@ -81,9 +103,13 @@ void leapp::javaScriptConsoleMessage(JavaScriptConsoleMessageLevel level, const 
 void leapp::trayClick(QSystemTrayIcon::ActivationReason reason)
 {
 	tools.debug(__FUNCTION__, reason);
+	if (reason == 3 && menu->actions().size() > 0) {
+		view->setVisible(!view->isVisible());
+		view->setWindowState(Qt::WindowActive);
+	}
 }
 // Событие при клике меню в трее
-void leapp::trayMenuClick(QAction *action)
+void leapp::trayMenuClick(QAction * action)
 {
 	tools.debug(__FUNCTION__, action->text());
 }

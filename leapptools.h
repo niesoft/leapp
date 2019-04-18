@@ -11,6 +11,7 @@ class LEAppTools
 {
 public:
 	bool isdebug = true;
+	QString path = "";
 
 	LEAppTools();
 
