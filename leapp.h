@@ -17,12 +17,14 @@ class leapp : public QWebEnginePage {
 
 public:
 	explicit leapp(QWidget *parent = nullptr);
-	void show();
 	QWebEngineView *view;
 	LEAppTools tools;
 	QSystemTrayIcon *tray;
-	void setTrayIcon(QIcon icon);
+	QMenu *menu;
+
+	void show();
 	void setTray();
+	void setTrayIcon(QIcon icon);
 	void setWindowIcon(QIcon icon);
 	void setWindowTitle(QString title);
 
@@ -30,6 +32,7 @@ public:
 	void javaScriptConsoleMessage(JavaScriptConsoleMessageLevel level, const QString &message, int lineNumber, const QString &sourceID);
 public slots:
 	void trayClick(QSystemTrayIcon::ActivationReason reason);
+	void trayMenuClick(QAction *action);
 };
 
 #endif // LEAAP_H

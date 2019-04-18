@@ -5,8 +5,10 @@ leapp::leapp(QWidget *parent) :
 	tools.debug(__FUNCTION__, "Starting Leapp...");
 	view = new QWebEngineView();
 	tray = new QSystemTrayIcon();
+	menu = new QMenu("leappMenu");
 	view->setPage(this);
 	connect(tray, &QSystemTrayIcon::activated, this, &leapp::trayClick);
+	connect(menu, &QMenu::triggered, this, &leapp::trayMenuClick);
 }
 
 void leapp::show()
@@ -28,14 +30,23 @@ void leapp::show()
 
 void leapp::setTray()
 {
-
-//	menu = new QMenu("Меню");
+	QString menustr = "О программе\nНастройки\nВыход";
+	QStringList menulist = menustr.split("\n");
+	for	(int i = 0; i < menulist.size(); i++) {
+		if (menulist[i] == "-"){
+			menu->addSeparator();
+		}else{
+			menu->addAction(new QAction(menulist[i], this));
+		}
+	}
+//	new QAction("Настройка", this);
 //	menu->addAction(setupAction);
 //	menu->addSeparator();
 //	menu->addAction(quitAction);
-//	tray->setContextMenu(menu);
+	tray->setContextMenu(menu);
 	tray->show();
 }
+
 // Меняем иконку трея
 void leapp::setTrayIcon(QIcon icon)
 {
@@ -70,4 +81,9 @@ void leapp::javaScriptConsoleMessage(JavaScriptConsoleMessageLevel level, const 
 void leapp::trayClick(QSystemTrayIcon::ActivationReason reason)
 {
 	tools.debug(__FUNCTION__, reason);
+}
+// Событие при клике меню в трее
+void leapp::trayMenuClick(QAction *action)
+{
+	tools.debug(__FUNCTION__, action->text());
 }
