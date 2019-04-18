@@ -1,11 +1,9 @@
 #include "leapp.h"
 
-void debug(QString fname, const QVariant &v);
-
-leapp::leapp(QWidget *parent) : QWebEnginePage(parent) {
+leapp::leapp(QWidget *parent) :
+	QWebEnginePage(parent) {
 	view = new QWebEngineView();
 	view->setPage(this);
-	tools = new Tools();
 	qDebug() << "start Leapp";
 }
 
@@ -17,12 +15,13 @@ void leapp::show()
 	view->show();
 	view->setMinimumSize(220, 140);
 	view->resize(640, 480);
+	tools.debug(__FUNCTION__, "test");
 }
 
 // Событие на alert();
 void leapp::javaScriptAlert(const QUrl &securityOrigin, const QString &message)
 {
-	debug(__FUNCTION__, message);
+//	debug(__FUNCTION__, message);
 	Q_UNUSED(securityOrigin);
 	qDebug() << message;
 	if (message == "test") view->page()->runJavaScript("test()", [](const QVariant &v) { qDebug() << v.toString(); });
@@ -31,10 +30,4 @@ void leapp::javaScriptAlert(const QUrl &securityOrigin, const QString &message)
 void leapp::javaScriptConsoleMessage(JavaScriptConsoleMessageLevel level, const QString &message, int lineNumber, const QString &sourceID) {
 	Q_UNUSED(level); Q_UNUSED(lineNumber); Q_UNUSED(sourceID);
 	qDebug() << message;
-}
-
-void debug(QString fname, const QVariant &v)
-{
-	qInfo() << "[123] " + fname + "():";
-	qDebug() << v;
 }

@@ -19,7 +19,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
 		main.cpp \
 	leapp.cpp \
-    tools.cpp
+    leapptools.cpp
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -28,4 +28,4 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 HEADERS += \
 	leapp.h \
-    tools.h
+    leapptools.h
