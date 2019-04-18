@@ -67,9 +67,9 @@ void leapp::setWindowTitle(QString title)
 void leapp::javaScriptAlert(const QUrl &securityOrigin, const QString &message)
 {
 	tools.debug(__FUNCTION__, message);
-	tools.debug(__FUNCTION__, tools.isOnline());
 	Q_UNUSED(securityOrigin);
-	if (message == "test") view->page()->runJavaScript("test()", [](const QVariant &v) { qDebug() << v.toString(); });
+	showTrayMessage("", message);
+//	if (message == "test") view->page()->runJavaScript("test()", [](const QVariant &v) { qDebug() << v.toString(); });
 }
 // Событие на сообщение в console.log();
 void leapp::javaScriptConsoleMessage(JavaScriptConsoleMessageLevel level, const QString &message, int lineNumber, const QString &sourceID)
@@ -86,4 +86,22 @@ void leapp::trayClick(QSystemTrayIcon::ActivationReason reason)
 void leapp::trayMenuClick(QAction *action)
 {
 	tools.debug(__FUNCTION__, action->text());
+}
+// Показать сообщение в трее
+void leapp::showTrayMessage(QString title, QString msg, int type, int msec)
+{
+	switch (type) {
+	case 1:
+		tray->showMessage(title, msg, QSystemTrayIcon::Information, msec);
+		break;
+	case 2:
+		tray->showMessage(title, msg, QSystemTrayIcon::Warning, msec);
+		break;
+	case 3:
+		tray->showMessage(title, msg, QSystemTrayIcon::Critical, msec);
+		break;
+	default:
+		tray->showMessage(title, msg, QSystemTrayIcon::NoIcon, msec);
+		break;
+	}
 }
