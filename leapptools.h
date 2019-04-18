@@ -5,13 +5,22 @@
 #include <QVariant>
 #include <QDebug>
 #include <QTime>
+#include <QProcess>
 
 class LEAppTools
 {
 public:
+	bool isdebug = true;
+
 	LEAppTools();
-	void debug(QString fname, const QVariant &v);
+
+	void debug(QString fname, const QVariant &v = "");
+
+	bool isOnline();
+
 	QString getTime();
+
+private:
 };
 
 #endif // LEAPPTOOLS_H
