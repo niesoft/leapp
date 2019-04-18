@@ -1,15 +1,16 @@
 #include "leapp.h"
 
-leapp::leapp(QWidget *parent) :
-	QWebEnginePage(parent) {
+void debug(QString fname, const QVariant &v);
+
+leapp::leapp(QWidget *parent) : QWebEnginePage(parent) {
 	view = new QWebEngineView();
 	view->setPage(this);
+	tools = new Tools();
 	qDebug() << "start Leapp";
 }
 
 void leapp::show()
 {
-//	view->setMinimumSize(640, 480);
 	view->setHtml("<script>function test(){ alert('test function'); return 'test return'; }</script><h1>test</h1>"
 				  "<button onclick='alert(\"test\")'>проверка</button>"
 				  "<button onclick='test();'>fun</button>");
@@ -19,10 +20,21 @@ void leapp::show()
 }
 
 // Событие на alert();
-void leapp::javaScriptAlert(const QUrl &securityOrigin, const QString &msg)
+void leapp::javaScriptAlert(const QUrl &securityOrigin, const QString &message)
 {
-	qDebug() << msg;
-	if (msg == "test") view->page()->runJavaScript("test()", [](const QVariant &v) { qDebug() << v.toString(); });
+	debug(__FUNCTION__, message);
+	Q_UNUSED(securityOrigin);
+	qDebug() << message;
+	if (message == "test") view->page()->runJavaScript("test()", [](const QVariant &v) { qDebug() << v.toString(); });
 }
 // Событие на сообщение в console.log();
+void leapp::javaScriptConsoleMessage(JavaScriptConsoleMessageLevel level, const QString &message, int lineNumber, const QString &sourceID) {
+	Q_UNUSED(level); Q_UNUSED(lineNumber); Q_UNUSED(sourceID);
+	qDebug() << message;
+}
 
+void debug(QString fname, const QVariant &v)
+{
+	qInfo() << "[123] " + fname + "():";
+	qDebug() << v;
+}
