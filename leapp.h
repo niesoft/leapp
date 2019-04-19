@@ -7,6 +7,7 @@
 #include <QSystemTrayIcon>
 #include <QWebEngineView>
 #include <QWebEnginePage>
+#include <QWebEngineProfile>
 #include <QMenu>
 #include <QDebug>
 #include <QCloseEvent>
@@ -32,6 +33,7 @@ public:
 	void showTrayMessage(QString title, QString msg, int type = 0, int msec = 10000);
 	void setPath(QString path);
 	void command(QString command);
+	void loadGui(QUrl url = QUrl("qrc:/gui/index.html"));
 
 	void javaScriptAlert(const QUrl &securityOrigin, const QString &message);
 	void javaScriptConsoleMessage(JavaScriptConsoleMessageLevel level, const QString &message, int lineNumber, const QString &sourceID);

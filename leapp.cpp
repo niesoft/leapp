@@ -15,18 +15,25 @@ leapp::leapp(QWidget *parent) :
 void leapp::show()
 {
 	tools.debug(__FUNCTION__);
-	view->load(QUrl("qrc:/gui/index.html"));
-	view->show();
-	view->setMinimumSize(220, 140);
-	view->resize(640, 480);
-	view->setContextMenuPolicy(Qt::NoContextMenu);
-
-
 	QPixmap pix(":/icons/icon64.png");
 	setTrayIcon(pix);
 	setWindowIcon(pix);
 	setWindowTitle("Leapp v0.0");
 	setTray();
+
+	loadGui();
+	view->setMinimumSize(220, 140);
+	view->resize(640, 480);
+	view->setContextMenuPolicy(Qt::NoContextMenu);
+	view->show();
+}
+
+void leapp::loadGui(QUrl url)
+{
+	view->setHtml("");
+	view->page()->profile()->clearHttpCache();
+
+	view->load(url);
 }
 
 void leapp::resizeEvent(QResizeEvent * event)
@@ -117,6 +124,7 @@ void leapp::trayClick(QSystemTrayIcon::ActivationReason reason)
 void leapp::trayMenuClick(QAction * action)
 {
 	tools.debug(__FUNCTION__, action->text());
+	view->page()->runJavaScript("leapp.trayMenuClick(\"" + action->text() + "\")");
 }
 // Показать сообщение в трее
 void leapp::showTrayMessage(QString title, QString msg, int type, int msec)
@@ -143,7 +151,9 @@ void leapp::command(QString command)
 		view->page()->runJavaScript("leapp.getWindowTitle()", [this](const QVariant &v) {
 			this->setWindowTitle(v.toString());
 		});
-	}else{
-		this->runJavaScript(command);
+	}else if (command == "Leapp.exit"){
+		view->close();
+	}else if (command == "Leapp.reload"){
+		loadGui();
 	}
 }

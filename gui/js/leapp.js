@@ -18,8 +18,12 @@ class Leapp {
 	}
 	get methodName(){
 	   let stack;
-		try{ throw Exception() } 
-		catch(e) { stack = e.stack.split(/\n/g); }
+		try { 
+			throw Exception() 
+		} 
+		catch(e) { 
+			stack = e.stack.split(/\n/g); 
+		}
 		stack.shift();
 		let row = stack[1].replace(/^\s*at\s+/,'').split(" ")[0];
 		return row;
@@ -27,7 +31,20 @@ class Leapp {
 	getWindowTitle() {
 		return this.windowTitle;
 	}
+	trayMenuClick(name) {
+		return;
+	}
+	reload() {
+		console.log(this.methodName);
+	}
+	exit() {
+		console.log(this.methodName);
+	}
 
 }
 
 var leapp = new Leapp(true);
+leapp.trayMenuClick = function(menu){
+	if (menu == "Выход") leapp.exit();
+	if (menu == "Настройки") console.log("Открываем меню настроек");
+}

@@ -3,5 +3,6 @@
         <file>icons/icon64.png</file>
         <file>gui/index.html</file>
         <file>gui/js/leapp.js</file>
+        <file>gui/css/style.css</file>
     </qresource>
 </RCC>
