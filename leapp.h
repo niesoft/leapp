@@ -1,3 +1,4 @@
+#pragma once
 #ifndef LEAAP_H
 #define LEAAP_H
 
@@ -13,7 +14,7 @@
 #include <QTimer>
 #include "leapptools.h"
 
-class leapp : public QWebEnginePage {
+class leapp : public QWebEnginePage{
 
 public:
 	explicit leapp(QWidget *parent = nullptr);
@@ -30,6 +31,7 @@ public:
 	void setWindowStyle(int style = 0);
 	void showTrayMessage(QString title, QString msg, int type = 0, int msec = 10000);
 	void setPath(QString path);
+	void command(QString command);
 
 	void javaScriptAlert(const QUrl &securityOrigin, const QString &message);
 	void javaScriptConsoleMessage(JavaScriptConsoleMessageLevel level, const QString &message, int lineNumber, const QString &sourceID);
@@ -37,11 +39,9 @@ public slots:
 	void trayClick(QSystemTrayIcon::ActivationReason reason);
 	void trayMenuClick(QAction *action);
 	void closeEvent(QCloseEvent * event);
-	void resizeEvent(QResizeEvent * event);
-private slots:
 
 protected:
-
+	void resizeEvent(QResizeEvent * event);
 };
 
 #endif // LEAAP_H

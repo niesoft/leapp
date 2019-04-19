@@ -1,7 +1,8 @@
 #include "leapp.h"
 
 leapp::leapp(QWidget *parent) :
-	QWebEnginePage(parent) {
+	QWebEnginePage(parent)
+	{
 	tools.debug(__FUNCTION__, "Starting Leapp...");
 	view = new QWebEngineView();
 	tray = new QSystemTrayIcon();
@@ -14,9 +15,7 @@ leapp::leapp(QWidget *parent) :
 void leapp::show()
 {
 	tools.debug(__FUNCTION__);
-	view->setHtml("<script>function test(){ alert('test function'); return 'test return'; }</script><h1>test</h1>"
-				  "<button onclick='alert(\"test\")'>проверка</button>"
-				  "<button onclick='test();'>fun</button>");
+	view->load(QUrl("qrc:/gui/index.html"));
 	view->show();
 	view->setMinimumSize(220, 140);
 	view->resize(640, 480);
@@ -28,6 +27,11 @@ void leapp::show()
 	setWindowIcon(pix);
 	setWindowTitle("Leapp v0.0");
 	setTray();
+}
+
+void leapp::resizeEvent(QResizeEvent * event)
+{
+	tools.debug(__FUNCTION__, event->type());
 }
 
 void leapp::setPath(QString path)
@@ -98,6 +102,7 @@ void leapp::javaScriptConsoleMessage(JavaScriptConsoleMessageLevel level, const 
 {
 	tools.debug(__FUNCTION__, message);
 	Q_UNUSED(level); Q_UNUSED(lineNumber); Q_UNUSED(sourceID);
+	command(message);
 }
 // Событие при клике на иконку трея
 void leapp::trayClick(QSystemTrayIcon::ActivationReason reason)
@@ -129,5 +134,16 @@ void leapp::showTrayMessage(QString title, QString msg, int type, int msec)
 	default:
 		tray->showMessage(title, msg, QSystemTrayIcon::NoIcon, msec);
 		break;
+	}
+}
+void leapp::command(QString command)
+{
+	QString result;
+	if (command == "Leapp.setWindowTitle") {
+		view->page()->runJavaScript("leapp.getWindowTitle()", [this](const QVariant &v) {
+			this->setWindowTitle(v.toString());
+		});
+	}else{
+		this->runJavaScript(command);
 	}
 }

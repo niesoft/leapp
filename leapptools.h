@@ -1,3 +1,4 @@
+#pragma once
 #ifndef LEAPPTOOLS_H
 #define LEAPPTOOLS_H
 
