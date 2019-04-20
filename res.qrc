@@ -4,5 +4,7 @@
         <file>html/index.html</file>
         <file>html/js/leapp.js</file>
         <file>html/css/style.css</file>
+        <file>html/js/example.js</file>
+        <file>html/pic/logo.svg</file>
     </qresource>
 </RCC>

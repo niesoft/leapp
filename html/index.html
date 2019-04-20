@@ -2,26 +2,76 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>Document</title>
+	<title>Leapp Example</title>
+<!-- 	<script src="highlight.pack.js"></script>
+	<script>hljs.initHighlightingOnLoad();</script> -->
 	<script src="js/leapp.js"></script>
+	<script src="js/example.js"></script>
 	<link rel="stylesheet" href="css/style.css">
+	<script>document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')</script>
 </head>
 <body>
-	<div><input type="text" id="wintitle"><button onclick="leapp.windowTitle = document.getElementById('wintitle').value;">setWindowTitle</button></div>
-	<div><button onclick="leapp.reload();">reload</button></div>
-	<div>
-		<small>WindowState:</small>
-		<select name="" id="wstate">
-			<option value="Active">Active</option>
-			<option value="FullScreen">FullScreen</option>
-			<option value="Maximized">Maximized</option>
-			<option value="Minimized">Minimized</option>
-			<option value="NoState">NoState</option>
-		</select>
-		<button onclick="leapp.windowState = document.getElementById('wstate').value;">WindowState</button>
+	<div class="example">
+		<h1># Introduction</h1>
+		<pre class="code"><code>&lt;head&gt;
+<small>...</small>
+  &lt;script src="<strong>js/leapp.js</strong>"&gt;&lt;/script&gt;
+  &lt;script&gt;
+    <span>let</span> <strong>leapp</strong> = <span>new</span> <strong>Leapp</strong>();
+  &lt;/script&gt;
+<small>...</small>
+&lt;/head&gt;</code></pre>
+		<br>
+		<h1># Public Functions</h1>
+		<div class="row">
+			<h2><small>leapp.</small>windowTitle("title")<small>;</small></h2>
+			<p>Sets the name of the parent window</p>
+			<div class="form">
+				<div class="columns">
+					<div class="flex1"><input id="wintitle" type="text" placeholder="Window title" value="title"></div>
+					<div><button onclick="leapp.windowTitle = document.getElementById('wintitle').value;">Set</button></div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<h2><small>leapp.</small>width = 500<small>;</small></h2>
+			<p>Sets the width of the parent window</p>
+			<div class="form">
+				<div class="columns">
+					<div class="flex1"><input id="winwidth" type="text" placeholder="Window width" value="500"></div>
+					<div><button onclick="leapp.width = document.getElementById('winwidth').value;">Set</button></div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<h2><small>leapp.</small>height = 500<small>;</small></h2>
+			<p>Sets the height of the parent window</p>
+			<div class="form">
+				<div class="columns">
+					<div class="flex1"><input id="winheight" type="text" placeholder="Window height" value="500"></div>
+					<div><button onclick="leapp.height = document.getElementById('winheight').value;">Set</button></div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<h2><small>leapp.</small>reload()<small>;</small></h2>
+			<p>Reloads the initial screen of the window</p>
+			<div class="form">
+				<div class="columns">
+					<div><button onclick="leapp.reload();" class="nomar">Reload</button></div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<h2>alert(text)</h2>
+			<p>Sends a simple message to tray</p>
+			<div class="form">
+				<div class="columns">
+					<div class="flex1"><input id="alert" type="text" placeholder="Tray message" value="Hello world"></div>
+					<div><button onclick="alert(document.getElementById('alert').value)">Send</button></div>
+				</div>
+			</div>
+		</div>
 	</div>
-	<div><input type="text" value="100" id="winwidth"><button onclick="leapp.width = document.getElementById('winwidth').value;">setWindowWidth</button></div>
-	<div><input type="text" value="100" id="winheight"><button onclick="leapp.height = document.getElementById('winheight').value;">setWindowHeight</button></div>
-	
 </body>
 </html>

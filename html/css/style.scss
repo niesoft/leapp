@@ -1,27 +1,104 @@
+@import 'mixin';
+@import url('https://fonts.googleapis.com/css?family=Anonymous+Pro:400,700&subset=cyrillic');
 * {
 	margin: 0px;
 	padding: 0px;
+	font-family: 'Anonymous Pro', monospace;
+	line-height: 1.6;
+	font-size: 12pt;
 }
+
 html, body {
-	width: 100%;
-	height: 100%;
-	background-color: #272B33;
-	color: #eee;
+	background-color: $color-row;
+}
+h1 {
+	color: $color-primary;
+	font-size: 200%;
+	display: block;
+	margin-bottom: 10px;
+}
+h2 {
+	color: $color-akcent;
+	font-size: 160%;
+}
+.color-akcent {
+	color: $color-akcent;
+}
+.columns {
+	@include flexbox();
 	> div {
-		padding: 20px;
-		button {
-			border: 1px solid rgba(0,0,0,0.2);
-			background-color: #f2720c;
-			color: #333;
-			padding: 10px;
-			font-size: 16px;
-			margin: 0px 10px;
-			cursor: pointer;
+		&.flex1 {
+			@include flex(1);
+		}
+	}
+}
+.example {
+	display: block;
+	margin: 0px auto;
+	max-width: 1024px;
+	padding: 40px; 
+}
+
+.code {
+	padding: 20px;
+	background-color: $color-primary;
+	color: $color-row;
+	strong {
+		color: $color-akcent;
+	}
+	small { color: rgba(255,255,255,.4); }
+	span { color: #90AE59; }
+	@include border-radius(3px);
+}
+.row {
+	margin-top: 20px;
+	padding: 20px;
+	border: 1px solid $color-primary + 170;
+	@include border-radius(3px);
+	> h2 {
+		font-size: 140%;
+		> small {
+			color: $color-primary;
+		}
+	}
+	> p {
+		font-size: 100%;
+	}
+	.form {
+		&:before {
+			content: "Example:";
+			display: block;
+			color: $color-primary + 100;
+			margin-bottom: 10px;
+			font-size: 80%;
 		}
 		input[type="text"] {
+			width: 100%;
 			padding: 10px;
-			margin: 0px 10px;
-			font-size: 16px;
+			border: 1px solid rgba(0,0,0,.2);
+			background-color: #fff;
+			font-size: 100%;
+			@include box-sizing();
+			@include border-radius(3px);
+		}
+		button {
+			font-size: 100%;
+			padding: 10px 20px;
+			background-color: $color-akcent;
+			color: #fff;
+			font-weight: bold;
+			cursor: pointer;
+			border: 1px solid $color-akcent;
+			margin-left: 20px;
+			@include box-sizing();
+			@include border-radius(3px);
+			@include transition(.3s);
+			&:hover {
+				background-color: $color-akcent - 20;
+			}
+			&.nomar {
+				margin-left: 0px;
+			}
 		}
 	}
 }
