@@ -1,49 +1,62 @@
 #pragma once
-#ifndef LEAAP_H
-#define LEAAP_H
-
+#ifndef LEAPP_H
+#define LEAPP_H
 
 #include <QMainWindow>
-#include <QSystemTrayIcon>
-#include <QWebEngineView>
-#include <QWebEnginePage>
-#include <QWebEngineProfile>
-#include <QMenu>
-#include <QDebug>
 #include <QCloseEvent>
-#include <QProcess>
-#include <QTimer>
-#include "leapptools.h"
+#include <QResizeEvent>
+#include <QtDebug>
+#include <QSystemTrayIcon>
+#include <QMenu>
+#include <QWebEngineProfile>
+#include "viewpage.h"
+#include "tools.h"
 
-class leapp : public QWebEnginePage{
+
+namespace Ui {
+class Leapp;
+}
+
+#include <QWebEnginePage>
+
+class Leapp : public QMainWindow
+{
+	Q_OBJECT
 
 public:
-	explicit leapp(QWidget *parent = nullptr);
-	QWebEngineView *view;
-	LEAppTools tools;
+	explicit Leapp(QWidget *parent = nullptr);
+	~Leapp();
+
+	QSize startsize = QSize(640,480);
+	QSize minimalsize = QSize(140,220);
+	QSize maximalsize = QSize(9999,9999);
+	int windowstatedefault = 0;
+	bool trayenable = true;
+	bool traymenuenable = true;
+
+	ViewPage *page;
 	QSystemTrayIcon *tray;
 	QMenu *menu;
+	QPixmap icon;
+	Tools tools;
 
-	void show();
-	void setTray();
-	void setTrayIcon(QIcon icon);
-	void setWindowIcon(QIcon icon);
-	void setWindowTitle(QString title);
-	void setWindowStyle(int style = 0);
-	void showTrayMessage(QString title, QString msg, int type = 0, int msec = 10000);
-	void setPath(QString path);
-	void command(QString command);
-	void loadGui(QUrl url = QUrl("qrc:/gui/index.html"));
-
-	void javaScriptAlert(const QUrl &securityOrigin, const QString &message);
-	void javaScriptConsoleMessage(JavaScriptConsoleMessageLevel level, const QString &message, int lineNumber, const QString &sourceID);
-public slots:
+	void start();
+	void loadHtml(QUrl url = QUrl("qrc:/html/index.html"));
+	void command(QString command = "");
+	void windowStateSet(QString state);
+	void windowStyleSet(QString style);
 	void trayClick(QSystemTrayIcon::ActivationReason reason);
-	void trayMenuClick(QAction *action);
-	void closeEvent(QCloseEvent * event);
+	void trayMenuClick(QAction * action);
+	void trayIconSet(QPixmap icon);
+	void trayMenuSet(QStringList list);
+	void trayMessageShow(QString title, QString msg, QString type = "0", int msec = 10000);
 
 protected:
+	void closeEvent(QCloseEvent *event);
 	void resizeEvent(QResizeEvent * event);
+
+private:
+	Ui::Leapp *ui;
 };
 
-#endif // LEAAP_H
+#endif // LEAPP_H

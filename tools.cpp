@@ -1,25 +1,22 @@
-#include "leapptools.h"
+#include "tools.h"
 
-LEAppTools::LEAppTools()
-{
-
-}
+Tools::Tools(){}
 
 // Вывод сообщений в консоль
-void LEAppTools::debug(QString fname, const QVariant &v)
+void Tools::debug(QString fname, const QVariant &v)
 {
-	if (isdebug) {
+	if (debugenable) {
 		qDebug() << "[" + getTime() + "] " + fname + "():";
 		qDebug() << v;
 	}
 }
 // Текущее время
-QString LEAppTools::getTime()
+QString Tools::getTime()
 {
 	return QString::fromStdString(QTime::currentTime().toString("HH:mm:ss").toStdString());
 }
 // Пингуем корневой сервер что бы проверить подключение к глобальной паутине.
-bool LEAppTools::isOnline()
+bool Tools::isOnline()
 {
 	#if defined(WIN32)
 	   QString parameter = "-n 1";
@@ -29,7 +26,7 @@ bool LEAppTools::isOnline()
 	int exitCode = QProcess::execute("ping", QStringList() << parameter << "198.41.0.4");
 	return (exitCode == 0) ? true : false;
 }
-QString getPath()
+QString Tools::getPath()
 {
 	return "";
 }

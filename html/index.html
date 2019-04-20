@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src="js/leapp.js"></script>
+	<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+	<div><input type="text" id="wintitle"><button onclick="leapp.windowTitle = document.getElementById('wintitle').value;">setWindowTitle</button></div>
+	<div><button onclick="leapp.reload();">reload</button></div>
+	<div>
+		<small>WindowState:</small>
+		<select name="" id="wstate">
+			<option value="Active">Active</option>
+			<option value="FullScreen">FullScreen</option>
+			<option value="Maximized">Maximized</option>
+			<option value="Minimized">Minimized</option>
+			<option value="NoState">NoState</option>
+		</select>
+		<button onclick="leapp.windowState = document.getElementById('wstate').value;">WindowState</button>
+	</div>
+	<div><input type="text" value="100" id="winwidth"><button onclick="leapp.width = document.getElementById('winwidth').value;">setWindowWidth</button></div>
+	<div><input type="text" value="100" id="winheight"><button onclick="leapp.height = document.getElementById('winheight').value;">setWindowHeight</button></div>
+	
+</body>
+</html>

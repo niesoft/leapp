@@ -1,6 +1,6 @@
 #pragma once
-#ifndef LEAPPTOOLS_H
-#define LEAPPTOOLS_H
+#ifndef TOOLS_H
+#define TOOLS_H
 
 #include <QString>
 #include <QVariant>
@@ -8,21 +8,20 @@
 #include <QTime>
 #include <QProcess>
 
-class LEAppTools
+
+class Tools
 {
 public:
-	bool isdebug = true;
+	Tools();
+
+	bool debugenable = true;
 	QString path = "";
 
-	LEAppTools();
-
+	void start();
 	void debug(QString fname, const QVariant &v = "");
-
 	bool isOnline();
-
+	QString getPath();
 	QString getTime();
-
-private:
 };
 
-#endif // LEAPPTOOLS_H
+#endif // TOOLS_H
