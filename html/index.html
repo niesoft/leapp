@@ -3,8 +3,8 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Leapp Example</title>
-<!-- 	<script src="highlight.pack.js"></script>
-	<script>hljs.initHighlightingOnLoad();</script> -->
+	<script src="js/qwebchannel.js"></script>
+	<script src="js/jquery-3.1.0.min.js"></script>
 	<script src="js/leapp.js"></script>
 	<script src="js/example.js"></script>
 	<link rel="stylesheet" href="css/style.css">
@@ -24,12 +24,39 @@
 		<br>
 		<h1># Public Functions</h1>
 		<div class="row">
-			<h2><small>leapp.</small>windowTitle("title")<small>;</small></h2>
+			<h2><small>leapp.</small>title = "example"<small>;</small></h2>
 			<p>Sets the name of the parent window</p>
 			<div class="form">
 				<div class="columns">
 					<div class="flex1"><input id="wintitle" type="text" placeholder="Window title" value="title"></div>
-					<div><button onclick="leapp.windowTitle = document.getElementById('wintitle').value;">Set</button></div>
+					<div><button onclick="leapp.title = document.getElementById('wintitle').value;">Set</button></div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<h2><small>leapp.</small>windowState("Minimized")<small>;</small></h2>
+			<p>Sets the state of the parent window.</p>
+			<p><small>Possible values:</small></p>
+			<span>Active</span>
+			<span>FullScreen</span>
+			<span>Maximized</span>
+			<span>Minimized</span>
+			<span>NoState</span>
+			<div class="form">
+				<div class="columns">
+					<div class="flex1">
+						<div class="select">
+							<p id="wstate">Minimized</p>
+							<div>
+								<a>Active</a>
+								<a>FullScreen</a>
+								<a>Maximized</a>
+								<a>Minimized</a>
+								<a>NoState</a>
+							</div>
+						</div>
+					</div>
+					<div><button onclick="leapp.windowState = document.getElementById('wstate').innerHTML;">Set</button></div>
 				</div>
 			</div>
 		</div>
@@ -54,12 +81,44 @@
 			</div>
 		</div>
 		<div class="row">
+			<h2><small>leapp.</small>left = 500<small>;</small></h2>
+			<p>Sets the window position on the x axis</p>
+			<div class="form">
+				<div class="columns">
+					<div class="flex1"><input id="winl" type="text" placeholder="Window left" value="500"></div>
+					<div><button onclick="leapp.left = document.getElementById('winl').value;">Set</button></div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<h2><small>leapp.</small>top = 500<small>;</small></h2>
+			<p>Sets the window position on the y axis</p>
+			<div class="form">
+				<div class="columns">
+					<div class="flex1"><input id="wint" type="text" placeholder="Window top" value="500"></div>
+					<div><button onclick="leapp.top = document.getElementById('wint').value;">Set</button></div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<h2><small>leapp.</small>hide()<small>;</small></h2>
+			<p>Hides parent window in tray</p>
+			<div class="form">
+				<button onclick="leapp.hide();" class="nomar">Hide window</button>
+			</div>
+		</div>
+		<div class="row">
+			<h2><small>leapp.</small>show()<small>;</small></h2>
+			<p>Shows the parent window</p>
+			<div class="form">
+				<button onclick="leapp.show();" class="nomar">Show window</button>
+			</div>
+		</div>
+		<div class="row">
 			<h2><small>leapp.</small>reload()<small>;</small></h2>
 			<p>Reloads the initial screen of the window</p>
 			<div class="form">
-				<div class="columns">
-					<div><button onclick="leapp.reload();" class="nomar">Reload</button></div>
-				</div>
+				<button onclick="leapp.reload();" class="nomar">Reload</button>
 			</div>
 		</div>
 		<div class="row">
@@ -70,6 +129,56 @@
 					<div class="flex1"><input id="alert" type="text" placeholder="Tray message" value="Hello world"></div>
 					<div><button onclick="alert(document.getElementById('alert').value)">Send</button></div>
 				</div>
+			</div>
+		</div>
+		<br>
+		<h1># Events</h1>
+		<div class="row">
+			<h2><small>leapp.</small>trayMenuClick(menuItemName)<small>;</small></h2>
+			<p>Sends a signal when clicking on the tray menu</p>
+			<div class="demo">
+				<p id="traymenuclick">Click on the tray menu</p>
+			</div>
+			<pre class="code"><code><i class='y'>leapp</i>.<i class='b'>trayMenuClick</i> = <i class='p'>function</i>(item){
+  <i class='p'>if</i> (<strong>item</strong> == <i class='g'>"Exit"</i>) <strong>leapp.exit</strong>();
+}</code></pre>
+		</div>
+		<div class="row">
+			<h2><small>leapp.</small>windowResize(width, height)<small>;</small></h2>
+			<p>Send a signal if the size of the parent window has been changed</p>
+			<div class="demo">
+				<p id="sizechanged">Resize the window</p>
+			</div>
+			<pre class="code"><code><i class='y'>leapp</i>.<i class='b'>windowResize</i> = <i class='p'>function</i>(w, h){
+<small>...</small>
+}</code></pre>
+		</div>
+		<div class="row">
+			<h2><small>leapp.</small>windowMove(x, y)<small>;</small></h2>
+			<p>Sends a signal when moving the parent window</p>
+			<div class="demo">
+				<p id="winmove">Move the window</p>
+			</div>
+			<pre class="code"><code><i class='y'>leapp</i>.<i class='b'>windowMove</i> = <i class='p'>function</i>(x, y){
+<small>...</small>
+}</code></pre>
+		</div>
+		<div class="row">
+			<h2><small>leapp.</small>windowClose()<small>;</small></h2>
+			<p>Sends a signal when the window is closed, return <strong>false</strong> to block the event.</p>
+			<div class="demo">
+				<p id="windowclose">Try closing the parent window.</p>
+			</div>
+			<pre class="code"><code><i class='y'>leapp</i>.<i class='b'>windowClose</i> = <i class='p'>function</i>(){
+  <i class='p'>return</i> <i class='y'>true</i>;
+}</code></pre>
+		</div>
+		<h1># SQL</h1>
+		<div class="row">
+			<h2><small>leapp.</small>sql(query, callback)<small>;</small></h2>
+			<p>Send sql query to sqllite3</p>
+			<div class="form">
+				<button class="sendsql">Send query</button>
 			</div>
 		</div>
 	</div>

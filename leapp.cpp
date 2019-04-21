@@ -9,6 +9,10 @@ Leapp::Leapp(QWidget *parent) :
 	tray = new QSystemTrayIcon();
 	menu = new QMenu("leappMenu");
 	icon = QPixmap(":/icons/icon64.png");
+	sql = new SQL(this);
+	transport = new Transport(this);
+
+	channel = new QWebChannel;
 
 	ui->setupUi(this);
 	ui->view->setPage(page);
@@ -41,11 +45,32 @@ void Leapp::loadHtml(QUrl url)
 {
 	ui->view->page()->profile()->clearHttpCache();
 	ui->view->load(url);
+
+//	QFile file("/media/niesoft/hard/Projects/leapp/leapp/html/index.html");
+//	file.open(QIODevice::ReadOnly);
+//	QTextStream in(&file);
+//	in.setCodec("UTF-8");
+//	QString line = in.readAll();
+//	file.close();
+//	ui->view->setHtml(line);
+
+	channel->registerObject(QString("qtObject"), transport);
+	ui->view->page()->setWebChannel(channel);
+
+}
+
+QString Leapp::onKeysExtracted(QStringList keys)
+{
+	qDebug() << "Вызов функции:";
+	qDebug() << keys;
+	this->resize(300,300);
+	return "work done! you best programmer!!";
 }
 
 // Изменяем состояние окна
 void Leapp::windowStateSet(QString state)
 {
+	this->show();
 	if (state == "0" || state == "nostate") this->setWindowState(Qt::WindowNoState);
 	if (state == "1" || state == "active") this->setWindowState(Qt::WindowActive);
 	if (state == "2" || state == "fullscreen") this->setWindowState(Qt::WindowFullScreen);
@@ -104,20 +129,35 @@ void Leapp::trayMenuClick(QAction * action)
 	tools.debug(__FUNCTION__, action->text());
 	this->page->runJavaScript("leapp.trayMenuClick(\"" + action->text() + "\")");
 }
+void Leapp::shutdown(bool exit)
+{
+	if (exit) qApp->exit(0);
+}
+// Действия при перемещении окна
+void Leapp::moveEvent(QMoveEvent *event)
+{
+	tools.debug(__FUNCTION__, event->pos());
+	this->page->runJavaScript("leapp.windowleft = " + QString::number(event->pos().x()) + "; "
+							  "leapp.windowtop = " + QString::number(event->pos().y()) + ";");
+	this->page->runJavaScript("leapp.windowMove(" + QString::number(event->pos().x()) + ", " + QString::number(event->pos().y()) + ")");
+}
 // Действия при закрытии окна
 void Leapp::closeEvent(QCloseEvent *event)
 {
-	Q_UNUSED(event);
-	qDebug() << __FUNCTION__;
-	if (tray->isVisible()) event->ignore();
-	this->page->runJavaScript("leapp.windowClose()");
+	event->ignore();
+	this->page->runJavaScript("leapp.windowClose()", [this](const QVariant &v) {
+		this->tools.debug(__FUNCTION__, v);
+		if (v.type() == QVariant::Bool) this->shutdown(v.toBool());
+	});
 }
 // Ресайз главной формы
 void Leapp::resizeEvent(QResizeEvent * event)
 {
 	Q_UNUSED(event);
-	qDebug() << __FUNCTION__;
-	this->page->runJavaScript("leapp.sizeChanged(" + QString::number(this->width()) + ", " + QString::number(this->height()) + ")");
+	tools.debug(__FUNCTION__, event->size());
+	this->page->runJavaScript("leapp.windowwidth = " + QString::number(this->width()) + "; "
+							  "leapp.windowheight = " + QString::number(this->height()) + ";");
+	this->page->runJavaScript("leapp.windowResize(" + QString::number(this->width()) + ", " + QString::number(this->height()) + ")");
 }
 // Отправить сообщение в трей.
 void ViewPage::javaScriptAlert(const QUrl &securityOrigin, const QString &message)
@@ -137,8 +177,8 @@ void ViewPage::javaScriptConsoleMessage(JavaScriptConsoleMessageLevel level, con
 void Leapp::command(QString command)
 {
 	QString result;
-	if (command == "Leapp.windowTitle") {
-		this->page->runJavaScript("leapp.windowtitle", [this](const QVariant &v) {
+	if (command == "Leapp.title") {
+		this->page->runJavaScript("leapp.title", [this](const QVariant &v) {
 			this->setWindowTitle(v.toString());
 		});
 	}else if (command == "Leapp.windowState"){
@@ -157,9 +197,54 @@ void Leapp::command(QString command)
 		this->page->runJavaScript("leapp.windowheight", [this](const QVariant &v) {
 			this->resize(this->width(), v.toString().toInt());
 		});
+	}else if (command == "Leapp.left"){
+		this->page->runJavaScript("leapp.windowleft", [this](const QVariant &v) {
+			this->move(v.toString().toInt(), this->y());
+		});
+	}else if (command == "Leapp.top"){
+		this->page->runJavaScript("leapp.windowtop", [this](const QVariant &v) {
+			this->move(this->x(), v.toString().toInt());
+		});
+	}else if (command == "Leapp.hide"){
+		this->hide();
+	}else if (command == "Leapp.show"){
+		this->show();
 	}else if (command == "Leapp.exit"){
 		qApp->exit(0);
 	}else if (command == "Leapp.reload"){
 		this->loadHtml();
 	}
+}
+
+
+QJsonArray SQL::send(QString str, bool res)
+{
+	QJsonArray array;
+	if( !query->exec(str) ) {
+		QJsonObject row;
+		row.insert("error", query->lastError().text());
+		row.insert("query", str);
+		array.push_front(row);
+	}else{
+		QSqlRecord rec = query->record();
+		while( query->next() ) {
+			QJsonObject row;
+			for (int i = 0; i < rec.count(); i++) {
+				row.insert(rec.fieldName(i), query->value(i).toString());
+			}
+			array.append(row);
+		}
+		if (array.count() == 0 && query->lastInsertId().toInt() > 0) {
+			QJsonObject row;
+			row.insert("lastInsertId", query->lastInsertId().toInt());
+			row.insert("numRowsAffected", query->numRowsAffected());
+			array.push_front(row);
+		}
+		if (array.count() == 0) {
+			QJsonObject row;
+			row.insert("numRowsAffected", query->numRowsAffected());
+			array.push_front(row);
+		}
+	}
+	return array;
 }

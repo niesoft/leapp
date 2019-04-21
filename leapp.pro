@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui webenginewidgets
+QT += core gui webenginewidgets sql
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -27,13 +27,17 @@ CONFIG += c++11
 SOURCES += \
 		main.cpp \
 		leapp.cpp \
-    viewpage.cpp \
-    tools.cpp
+	viewpage.cpp \
+	tools.cpp \
+	sql.cpp \
+    transport.cpp
 
 HEADERS += \
 		leapp.h \
-    viewpage.h \
-    tools.h
+	viewpage.h \
+	tools.h \
+	sql.h \
+    transport.h
 
 FORMS += \
 		leapp.ui
@@ -44,4 +48,4 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 RESOURCES += \
-    res.qrc
+	res.qrc

@@ -6,5 +6,8 @@
         <file>html/css/style.css</file>
         <file>html/js/example.js</file>
         <file>html/pic/logo.svg</file>
+        <file>html/js/jquery-3.1.0.min.js</file>
+        <file>html/pic/scroll.svg</file>
+        <file>html/js/qwebchannel.js</file>
     </qresource>
 </RCC>
