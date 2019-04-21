@@ -54,7 +54,7 @@ void Leapp::loadHtml(QUrl url)
 //	file.close();
 //	ui->view->setHtml(line);
 
-	channel->registerObject(QString("qtObject"), transport);
+	channel->registerObject(QString("leapp"), transport);
 	ui->view->page()->setWebChannel(channel);
 
 }
@@ -129,25 +129,21 @@ void Leapp::trayMenuClick(QAction * action)
 	tools.debug(__FUNCTION__, action->text());
 	this->page->runJavaScript("leapp.trayMenuClick(\"" + action->text() + "\")");
 }
-void Leapp::shutdown(bool exit)
-{
-	if (exit) qApp->exit(0);
-}
 // Действия при перемещении окна
 void Leapp::moveEvent(QMoveEvent *event)
 {
 	tools.debug(__FUNCTION__, event->pos());
-	this->page->runJavaScript("leapp.windowleft = " + QString::number(event->pos().x()) + "; "
-							  "leapp.windowtop = " + QString::number(event->pos().y()) + ";");
-	this->page->runJavaScript("leapp.windowMove(" + QString::number(event->pos().x()) + ", " + QString::number(event->pos().y()) + ")");
+	this->page->runJavaScript("leapp.window.left = " + QString::number(event->pos().x()) + "; "
+							  "leapp.window.top = " + QString::number(event->pos().y()) + ";");
+	this->page->runJavaScript("leapp.onMove(" + QString::number(event->pos().x()) + ", " + QString::number(event->pos().y()) + ")");
 }
 // Действия при закрытии окна
 void Leapp::closeEvent(QCloseEvent *event)
 {
 	event->ignore();
-	this->page->runJavaScript("leapp.windowClose()", [this](const QVariant &v) {
+	this->page->runJavaScript("leapp.onClose()", [this](const QVariant &v) {
 		this->tools.debug(__FUNCTION__, v);
-		if (v.type() == QVariant::Bool) this->shutdown(v.toBool());
+		if (v.type() == QVariant::Bool) qApp->exit(0);
 	});
 }
 // Ресайз главной формы
@@ -155,9 +151,9 @@ void Leapp::resizeEvent(QResizeEvent * event)
 {
 	Q_UNUSED(event);
 	tools.debug(__FUNCTION__, event->size());
-	this->page->runJavaScript("leapp.windowwidth = " + QString::number(this->width()) + "; "
-							  "leapp.windowheight = " + QString::number(this->height()) + ";");
-	this->page->runJavaScript("leapp.windowResize(" + QString::number(this->width()) + ", " + QString::number(this->height()) + ")");
+	this->page->runJavaScript("leapp.window.width = " + QString::number(this->width()) + "; "
+							  "leapp.window.height = " + QString::number(this->height()) + ";");
+	this->page->runJavaScript("leapp.onResize(" + QString::number(this->width()) + ", " + QString::number(this->height()) + ")");
 }
 // Отправить сообщение в трей.
 void ViewPage::javaScriptAlert(const QUrl &securityOrigin, const QString &message)
@@ -177,11 +173,7 @@ void ViewPage::javaScriptConsoleMessage(JavaScriptConsoleMessageLevel level, con
 void Leapp::command(QString command)
 {
 	QString result;
-	if (command == "Leapp.title") {
-		this->page->runJavaScript("leapp.title", [this](const QVariant &v) {
-			this->setWindowTitle(v.toString());
-		});
-	}else if (command == "Leapp.windowState"){
+	if (command == "Leapp.windowState"){
 		this->page->runJavaScript("leapp.windowstate", [this](const QVariant &v) {
 			this->windowStateSet(v.toString().toLower());
 		});
@@ -189,30 +181,6 @@ void Leapp::command(QString command)
 		this->page->runJavaScript("leapp.windowstyle", [this](const QVariant &v) {
 			this->windowStyleSet(v.toString().toLower());
 		});
-	}else if (command == "Leapp.width"){
-		this->page->runJavaScript("leapp.windowwidth", [this](const QVariant &v) {
-			this->resize(v.toString().toInt(), this->height());
-		});
-	}else if (command == "Leapp.height"){
-		this->page->runJavaScript("leapp.windowheight", [this](const QVariant &v) {
-			this->resize(this->width(), v.toString().toInt());
-		});
-	}else if (command == "Leapp.left"){
-		this->page->runJavaScript("leapp.windowleft", [this](const QVariant &v) {
-			this->move(v.toString().toInt(), this->y());
-		});
-	}else if (command == "Leapp.top"){
-		this->page->runJavaScript("leapp.windowtop", [this](const QVariant &v) {
-			this->move(this->x(), v.toString().toInt());
-		});
-	}else if (command == "Leapp.hide"){
-		this->hide();
-	}else if (command == "Leapp.show"){
-		this->show();
-	}else if (command == "Leapp.exit"){
-		qApp->exit(0);
-	}else if (command == "Leapp.reload"){
-		this->loadHtml();
 	}
 }
 
@@ -247,4 +215,46 @@ QJsonArray SQL::send(QString str, bool res)
 		}
 	}
 	return array;
+}
+
+
+QJsonObject Transport::resize(int w, int h)
+{
+	int width = (w >= 0) ? w : leapp->width();
+	int height = (h >= 0) ? h : leapp->height();
+	leapp->resize(width, height);
+	QJsonObject result{{"width", leapp->width()}, {"height", leapp->height()}};
+	return result;
+}
+QJsonObject Transport::move(int x, int y)
+{
+	int left = (x >= 0) ? x : leapp->x();
+	int top = (y >= 0) ? y : leapp->y();
+	leapp->move(left, top);
+	QJsonObject result{{"left", leapp->x()}, {"top", leapp->y()}};
+	return result;
+}
+void Transport::title(QString title)
+{
+	leapp->setWindowTitle(title);
+}
+void Transport::reload(QString url)
+{
+	if (url != "") {
+		leapp->loadHtml(QUrl(url));
+	}else {
+		leapp->loadHtml(QUrl(url));
+	}
+}
+void Transport::show()
+{
+	leapp->show();
+}
+void Transport::hide()
+{
+	leapp->hide();
+}
+void Transport::exit()
+{
+	qApp->exit(0);
 }

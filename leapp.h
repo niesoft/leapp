@@ -11,6 +11,7 @@
 #include <QMenu>
 #include <QWebEngineProfile>
 #include <QWebChannel>
+#include <QJsonObject>
 #include "viewpage.h"
 #include "tools.h"
 #include "sql.h"
@@ -58,7 +59,6 @@ public:
 	void trayIconSet(QPixmap icon);
 	void trayMenuSet(QStringList list);
 	void trayMessageShow(QString title, QString msg, QString type = "0", int msec = 10000);
-	void shutdown(bool exit);
 
 protected:
 	void closeEvent(QCloseEvent *event);
