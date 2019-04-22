@@ -219,6 +219,14 @@ QJsonObject Transport::resize(int w, int h)
 	QJsonObject result{{"width", leapp->width()}, {"height", leapp->height()}};
 	return result;
 }
+QJsonObject Transport::minSize(int w, int h)
+{
+	int width = (w >= 0) ? w : leapp->width();
+	int height = (h >= 0) ? h : leapp->height();
+	leapp->resize(width, height);
+	QJsonObject result{{"width", leapp->width()}, {"height", leapp->height()}};
+	return result;
+}
 QJsonObject Transport::move(int x, int y)
 {
 	int left = (x >= 0) ? x : leapp->x();

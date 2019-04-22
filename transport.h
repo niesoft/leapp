@@ -16,6 +16,7 @@ public:
 
 public slots:
 	QJsonObject resize(int w = -1, int h = -1);
+	QJsonObject minSize(int w = -1, int h = -1);
 	QJsonObject move(int x = -1, int y = -1);
 	void title(QString title = " ");
 	void show();
