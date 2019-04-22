@@ -129,7 +129,7 @@
 			<p>Sets the minimal width of the parent window</p>
 			<div class="form">
 				<div class="columns">
-					<div class="flex1"><input id="minwinwidth" type="text" placeholder="Window width" value="100"></div>
+					<div class="flex1"><input id="minwinwidth" type="text" placeholder="Window minimal width" value="100"></div>
 					<div><button onclick="leapp.minWidth = document.getElementById('minwinwidth').value;">Set</button></div>
 				</div>
 			</div>
@@ -139,8 +139,28 @@
 			<p>Sets the minimal height of the parent window</p>
 			<div class="form">
 				<div class="columns">
-					<div class="flex1"><input id="minwinheight" type="text" placeholder="Window height" value="100"></div>
+					<div class="flex1"><input id="minwinheight" type="text" placeholder="Window minimal height" value="100"></div>
 					<div><button onclick="leapp.minHeight = document.getElementById('minwinheight').value;">Set</button></div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<h2><small>leapp.</small>maxWidth = 1000<small>;</small></h2>
+			<p>Sets the maximal width of the parent window</p>
+			<div class="form">
+				<div class="columns">
+					<div class="flex1"><input id="maxwinwidth" type="text" placeholder="Window maximal width" value="100"></div>
+					<div><button onclick="leapp.maxWidth = document.getElementById('maxwinwidth').value;">Set</button></div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<h2><small>leapp.</small>maxHeight = 1000<small>;</small></h2>
+			<p>Sets the maximal height of the parent window</p>
+			<div class="form">
+				<div class="columns">
+					<div class="flex1"><input id="maxwinheight" type="text" placeholder="Window maximal height" value="100"></div>
+					<div><button onclick="leapp.maxHeight = document.getElementById('maxwinheight').value;">Set</button></div>
 				</div>
 			</div>
 		</div>

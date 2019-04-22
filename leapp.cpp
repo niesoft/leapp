@@ -231,6 +231,14 @@ QJsonObject Transport::minSize(int w, int h)
 	QJsonObject result{{"minWidth", leapp->minimumWidth()}, {"minHeight", leapp->minimumHeight()}};
 	return result;
 }
+QJsonObject Transport::maxSize(int w, int h)
+{
+	int width = (w >= 0) ? w : leapp->maximumWidth();
+	int height = (h >= 0) ? h : leapp->maximumHeight();
+	leapp->setMaximumSize(width, height);
+	QJsonObject result{{"maxWidth", leapp->maximumWidth()}, {"maxHeight", leapp->maximumHeight()}};
+	return result;
+}
 QJsonObject Transport::move(int x, int y)
 {
 	int left = (x >= 0) ? x : leapp->x();
