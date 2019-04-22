@@ -3,14 +3,12 @@
 class Leapp {
 	constructor() {
 		this.window = {
-			width: 0,
-			height: 0,
-			left: 0,
-			top: 0,
+			width: 0, height: 0,
+			minWidth: 0, minHeight: 0,
+			left: 0, top: 0,
 			title: "Example",
-			state: 0,
-			style: 0,
-			path: "123"
+			state: 0, style: 0,
+			path: ""
 		};
 		this.debug = false;
 		this.windowstate = "";
@@ -40,6 +38,29 @@ class Leapp {
 		if (typeof height != 'undefined' && !Number.isInteger(height)) this.resize(-1, Number(height));
 	} get height(){ return this.window.height; }
 
+// Изменение минимального размера родительского окна.
+	minSize(width, height, callback) {
+		if (typeof width == 'undefined' || !Number.isInteger(width)) width = -1;
+		if (typeof height == 'undefined' || !Number.isInteger(height)) height = -1;
+		var me = this;
+		var webChannel = new QWebChannel( qt.webChannelTransport, function(channel) {
+			channel.objects.leapp.minSize(width, height, function(data){
+				if (typeof data.width != undefined && typeof data.height != undefined) {
+					me.window.width = data.width;
+					me.window.height = data.height;
+				}
+				if (typeof callback === "function") callback(data);
+			});
+		});
+	}
+// Изменение/получение минимальной ширины родительского окна.
+	set minWidth(minWidth) {
+		if (typeof minWidth != 'undefined' && !Number.isInteger(minWidth)) this.minSize(Number(minWidth));
+	} get minWidth(){ return this.window.minWidth; }
+// Изменение/получение минимальной высоты родительского окна.
+	set minHeight(minHeight) {
+		if (typeof minHeight != 'undefined' && !Number.isInteger(minHeight)) this.minSize(-1, Number(minHeight));
+	} get minHeight(){ return this.window.minHeight; }
 
 // Изменение положения родительского окна.
 	move(left, top, callback) {

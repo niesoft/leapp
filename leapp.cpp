@@ -89,6 +89,10 @@ QString Leapp::setProperties(){
 	if (this->windowState() == Qt::WindowMinimized) state = 4;
 	properties += "leapp.window.width = \"" + QString::number(this->width()) + "\";";
 	properties += "leapp.window.height = \"" + QString::number(this->height()) + "\";";
+	properties += "leapp.window.minWidth = \"" + QString::number(this->minimumWidth()) + "\";";
+	properties += "leapp.window.minHeight = \"" + QString::number(this->minimumHeight()) + "\";";
+	properties += "leapp.window.maxWidth = \"" + QString::number(this->maximumWidth()) + "\";";
+	properties += "leapp.window.maxHeight = \"" + QString::number(this->maximumHeight()) + "\";";
 	properties += "leapp.window.left = \"" + QString::number(this->x()) + "\";";
 	properties += "leapp.window.top = \"" + QString::number(this->y()) + "\";";
 	properties += "leapp.window.title = \"" + this->windowTitle() + "\";";
@@ -221,10 +225,10 @@ QJsonObject Transport::resize(int w, int h)
 }
 QJsonObject Transport::minSize(int w, int h)
 {
-	int width = (w >= 0) ? w : leapp->width();
-	int height = (h >= 0) ? h : leapp->height();
-	leapp->resize(width, height);
-	QJsonObject result{{"width", leapp->width()}, {"height", leapp->height()}};
+	int width = (w >= 0) ? w : leapp->minimumWidth();
+	int height = (h >= 0) ? h : leapp->minimumHeight();
+	leapp->setMinimumSize(width, height);
+	QJsonObject result{{"minWidth", leapp->minimumWidth()}, {"minHeight", leapp->minimumHeight()}};
 	return result;
 }
 QJsonObject Transport::move(int x, int y)
