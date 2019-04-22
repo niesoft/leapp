@@ -7,6 +7,7 @@
 #include <QDebug>
 #include <QTime>
 #include <QProcess>
+#include <QFile>
 
 
 class Tools
@@ -22,6 +23,7 @@ public:
 	bool isOnline();
 	QString getPath();
 	QString getTime();
+	QString fileOpen(QString filename);
 };
 
 #endif // TOOLS_H

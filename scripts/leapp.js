@@ -7,15 +7,13 @@ class Leapp {
 			height: 0,
 			left: 0,
 			top: 0,
-			title: "Example"
+			title: "Example",
+			state: 0,
+			style: 0,
+			path: "123"
 		};
 		this.debug = false;
-		this.windowtitle = "";
 		this.windowstate = "";
-		this.windowwidth = 100;
-		this.windowheight = 100;
-		this.windowleft = 100;
-		this.windowtop = 100;
 	}
 
 // Изменение размера родительского окна.
@@ -68,13 +66,33 @@ class Leapp {
 	} get top(){ return this.window.top; }
 // Изменение/получение заголовка окна
 	set title(title) {
-		if (typeof title === undefined) title = " ";
+		if (typeof title == 'undefined') title = " ";
 		var me = this;
 		var webChannel = new QWebChannel( qt.webChannelTransport, function(channel) {
 			me.window.title = title;
 			channel.objects.leapp.title(title);
 		});
 	} get title() { return this.window.title; }
+// Изменение/получение статуса родительского окна
+	set state(state) {
+		if (typeof state == 'undefined' || Number(state) > 4) state = 0;
+		var me = this;
+		var webChannel = new QWebChannel( qt.webChannelTransport, function(channel) {
+			me.window.state = Number(state);
+			channel.objects.leapp.state(Number(state));
+		});
+	} get state() { return this.window.state; }
+// Изменение/получение стиля родительского окна
+	set style(style) {
+		if (typeof style == 'undefined' || Number(style) > 7) style = 0;
+		var me = this;
+		var webChannel = new QWebChannel( qt.webChannelTransport, function(channel) {
+			me.window.style = Number(style);
+			channel.objects.leapp.style(Number(style));
+		});
+	} get state() { return this.window.state; }
+// Узнать путь к исполняемому файлу программы
+	path() { return this.window.path; }
 
 
 /////////////
@@ -83,7 +101,7 @@ class Leapp {
 
 // Перезагрузка содержимого окна
 	reload(url) {
-		if (typeof url === undefined) url = "";
+		if (typeof url == 'undefined') url = "";
 		var webChannel = new QWebChannel( qt.webChannelTransport, function(channel) {
 			channel.objects.leapp.reload(url);
 		});
@@ -107,6 +125,28 @@ class Leapp {
 		});
 	}
 
+
+///////////////
+// FUNCTIONS //
+///////////////
+
+// Запрос к БД storage SQLLITE 3
+	sql(query, callback) {
+		// let event = {fun: "sql", query: query, callback: eval(callback).toString()};
+		var webChannel = new QWebChannel( qt.webChannelTransport, function(channel) {
+			var temp = channel.objects.leapp.sql(query, function(data){
+				if (typeof callback === "function") callback(data);
+			});
+		});
+	}
+// Отправка GET запроса
+	get(url, params, callback) {
+		var webChannel = new QWebChannel( qt.webChannelTransport, function(channel) {
+			var temp = channel.objects.leapp.get(url, params, function(data){
+				if (typeof callback === "function") callback(data);
+			});
+		});
+	}
 
 ////////////
 // EVENTS //
@@ -135,22 +175,6 @@ class Leapp {
 		console.log(this.methodName);
 	}
 
-	set windowState(state) {
-		this.windowstate = state;
-		console.log(this.methodName);
-	}
-
-
-	
-	sql(query, callback) {
-		// let event = {fun: "sql", query: query, callback: eval(callback).toString()};
-		// console.log(JSON.stringify(event));
-		var webChannel = new QWebChannel( qt.webChannelTransport, function(channel) {
-			var temp = channel.objects.qtObject.resize(300, 500, function(e){
-				callback(e);
-			});
-		});
-	}
 
 	trayMenuClick(name) {
 		return true;
@@ -171,3 +195,4 @@ class Leapp {
 	}
 
 }
+let leapp = new Leapp();

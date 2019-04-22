@@ -2,12 +2,21 @@
     <qresource prefix="/">
         <file>icons/icon64.png</file>
         <file>html/index.html</file>
-        <file>html/js/leapp.js</file>
         <file>html/css/style.css</file>
         <file>html/js/example.js</file>
         <file>html/pic/logo.svg</file>
         <file>html/js/jquery-3.1.0.min.js</file>
         <file>html/pic/scroll.svg</file>
-        <file>html/js/qwebchannel.js</file>
+        <file>scripts/leapp.js</file>
+        <file>scripts/qwebchannel.js</file>
+        <file>html/css/font.css</file>
+        <file>html/fonts/rP2Bp2a15UIB7Un-bOeISG3pHl829RH9.woff2</file>
+        <file>html/fonts/rP2Bp2a15UIB7Un-bOeISG3pHlg29RH9.woff2</file>
+        <file>html/fonts/rP2Bp2a15UIB7Un-bOeISG3pHls29Q.woff2</file>
+        <file>html/fonts/rP2Bp2a15UIB7Un-bOeISG3pHlU29RH9.woff2</file>
+        <file>html/fonts/rP2cp2a15UIB7Un-bOeISG3pFuAT4C3c7ZOy.woff2</file>
+        <file>html/fonts/rP2cp2a15UIB7Un-bOeISG3pFuAT4C7c7Q.woff2</file>
+        <file>html/fonts/rP2cp2a15UIB7Un-bOeISG3pFuAT4CDc7ZOy.woff2</file>
+        <file>html/fonts/rP2cp2a15UIB7Un-bOeISG3pFuAT4Crc7ZOy.woff2</file>
     </qresource>
 </RCC>

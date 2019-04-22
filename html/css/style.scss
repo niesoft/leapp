@@ -1,5 +1,5 @@
 @import 'mixin';
-// @import url('https://fonts.googleapis.com/css?family=Anonymous+Pro:400,700&subset=cyrillic');
+@import url('font.css');
 * {
 	margin: 0px;
 	padding: 0px;
@@ -54,6 +54,15 @@ h2 {
 		}
 	}
 }
+.sqlresult, .sqlinfo {
+	thead {
+		td {
+			background-color: $color-primary;
+			color: #fff;
+			border: none !important;
+		}
+	}
+}
 .example {
 	display: block;
 	margin: 0px auto;
@@ -75,6 +84,14 @@ h2 {
 	.g { color: #84C071; }
 	small { color: rgba(255,255,255,.4); }
 	span { color: #90AE59; }
+	@include border-radius(3px);
+}
+.textresult {
+	width: 100%;
+	resize: none;
+	padding: 10px;
+	font-size: 60%;
+	@include box-sizing();
 	@include border-radius(3px);
 }
 .row {
@@ -117,6 +134,16 @@ h2 {
 			background-color: #fff;
 			padding: 10px;
 			font-style: italic;
+			@include border-radius(3px);
+		}
+	}
+	table {
+		width: 100%;
+		border-spacing: 10px;
+		td {
+			padding: 5px 10px;
+			font-size: 90%;
+			border: 1px solid $color-primary + 170;
 			@include border-radius(3px);
 		}
 	}
@@ -167,6 +194,10 @@ h2 {
 				font-size: 100%;
 				@include box-sizing();
 				@include border-radius(3px);
+				> small {
+					font-size: 70%;
+					color: #888;
+				}
 			}
 			> div {
 				background-color: #fff;
@@ -182,6 +213,10 @@ h2 {
 					@include transition(.3s);
 					&:hover {
 						background-color: #fff - 10;
+					}
+					> small {
+						font-size: 70%;
+						color: #888;
 					}
 				}
 			}

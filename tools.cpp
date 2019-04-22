@@ -30,3 +30,13 @@ QString Tools::getPath()
 {
 	return "";
 }
+QString Tools::fileOpen(QString filename)
+{
+	QFile file(filename);
+	file.open(QIODevice::ReadOnly);
+	QTextStream in(&file);
+	in.setCodec("UTF-8");
+	QString line = in.readAll();
+	file.close();
+	return line;
+}

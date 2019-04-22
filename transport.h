@@ -22,6 +22,10 @@ public slots:
 	void hide();
 	void exit();
 	void reload(QString url = "");
+	void state(int s = 0);
+	void style(int style = 0);
+	QJsonObject sql(QString query);
+
 };
 
 #endif // TRANSPORT_H

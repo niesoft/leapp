@@ -7,6 +7,7 @@
 #include <QSqlError>
 #include <QJsonArray>
 #include <QJsonObject>
+#include <QThread>
 
 class Leapp;
 
@@ -17,7 +18,7 @@ public:
 	Leapp * leapp;
 	QSqlDatabase db;
 	QSqlQuery * query;
-	QJsonArray send(QString str, bool res = false);
+	QJsonObject send(QString str);
 
 };
 
@@ -35,3 +36,24 @@ public:
 //	temp = sql->send(sqltemp.remove(sqltemp.size()-1, 1));
 //	temp = sql.send("DELETE FROM UserNew WHERE id in (SELECT id FROM UserNew LIMIT 4)");
 //	qDebug() << temp;
+//QStringList abc = QString("q w e r t y u i o p a s d f g h j k l z x c v b n m").split(" ");
+//QString tempname = "";
+//for (int a = 4; a < rand() % 15 + 1; a++) {
+//	tempname += abc[rand() % (abc.size()-1)];
+//}
+//QString sqltemp = "INSERT INTO users (name, email) VALUES";
+//for (int i = 0; i < 20000; i++) {
+//	QString tempname = "";
+//	for (int a = 0; a < rand() % 15 + 5; a++) {
+//		tempname += abc[rand() % (abc.size()-1)];
+//	}
+//	QString tempmail = "";
+//	for (int a = 0; a < rand() % 10 + 5; a++) {
+//		tempmail += abc[rand() % (abc.size()-1)];
+//	}
+
+//	qDebug() << tempname + " => " + tempmail + "@mail.ru";
+
+//	sqltemp += ("('" + tempname +  "', '" + tempmail +  "'),");
+//}
+//QJsonObject temp = sql->send(sqltemp.remove(sqltemp.size()-1, 1));

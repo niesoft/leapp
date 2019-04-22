@@ -9,7 +9,10 @@
 #include <QtDebug>
 #include <QSystemTrayIcon>
 #include <QMenu>
+#include <QThread>
 #include <QWebEngineProfile>
+#include <QWebEngineScript>
+#include <QWebEngineScriptCollection>
 #include <QWebChannel>
 #include <QJsonObject>
 #include "viewpage.h"
@@ -51,14 +54,14 @@ public:
 
 	void start();
 	void loadHtml(QUrl url = QUrl("qrc:/html/index.html"));
-	void command(QString command = "");
-	void windowStateSet(QString state);
-	void windowStyleSet(QString style);
 	void trayClick(QSystemTrayIcon::ActivationReason reason);
 	void trayMenuClick(QAction * action);
 	void trayIconSet(QPixmap icon);
 	void trayMenuSet(QStringList list);
 	void trayMessageShow(QString title, QString msg, QString type = "0", int msec = 10000);
+	QString setProperties();
+
+	QString fileOpen(QString filename);
 
 protected:
 	void closeEvent(QCloseEvent *event);
@@ -68,7 +71,9 @@ protected:
 private:
 	Ui::Leapp *ui;
 public slots:
-	QString onKeysExtracted(QStringList keys);
+	void loadFinished();
+	void loadProgress();
+	void loadStarted();
 };
 
 #endif // LEAPP_H

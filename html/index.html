@@ -3,9 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Leapp Example</title>
-	<script src="js/qwebchannel.js"></script>
 	<script src="js/jquery-3.1.0.min.js"></script>
-	<script src="js/leapp.js"></script>
 	<script src="js/example.js"></script>
 	<link rel="stylesheet" href="css/style.css">
 	<script>document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')</script>
@@ -24,6 +22,13 @@
 		<br>
 		<h1># Public Functions</h1>
 		<div class="row">
+			<h2><small>leapp.</small>path()<small>;</small></h2>
+			<p>Returns the path to the directory with the program</p>
+			<div class="form">
+				<textarea class="textresult" readonly id="path" cols="30" rows="1"></textarea>
+			</div>
+		</div>
+		<div class="row">
 			<h2><small>leapp.</small>title = "example"<small>;</small></h2>
 			<p>Sets the name of the parent window</p>
 			<div class="form">
@@ -34,29 +39,68 @@
 			</div>
 		</div>
 		<div class="row">
-			<h2><small>leapp.</small>windowState("Minimized")<small>;</small></h2>
+			<h2><small>leapp.</small>state = 4<small>;</small></h2>
 			<p>Sets the state of the parent window.</p>
 			<p><small>Possible values:</small></p>
-			<span>Active</span>
-			<span>FullScreen</span>
-			<span>Maximized</span>
-			<span>Minimized</span>
-			<span>NoState</span>
+			<table>
+				<tr><td>0</td><td>NoState</td></tr>
+				<tr><td>1</td><td>Active</td></tr>
+				<tr><td>2</td><td>FullScreen</td></tr>
+				<tr><td>3</td><td>Maximized</td></tr>
+				<tr><td>4</td><td>Minimized</td></tr>
+			</table>
 			<div class="form">
 				<div class="columns">
 					<div class="flex1">
 						<div class="select">
-							<p id="wstate">Minimized</p>
+							<input type="hidden" id="wstate" value="4">
+							<p>4<small> - Minimized</small></p>
 							<div>
-								<a>Active</a>
-								<a>FullScreen</a>
-								<a>Maximized</a>
-								<a>Minimized</a>
-								<a>NoState</a>
+								<a item='1'>1<small> - Active</small></a>
+								<a item='2'>2<small> - FullScreen</small></a>
+								<a item='3'>3<small> - Maximized</small></a>
+								<a item='4'>4<small> - Minimized</small></a>
+								<a item='0'>0<small> - NoState</small></a>
 							</div>
 						</div>
 					</div>
-					<div><button onclick="leapp.windowState = document.getElementById('wstate').innerHTML;">Set</button></div>
+					<div><button onclick="leapp.state = document.getElementById('wstate').value;">Set</button></div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<h2><small>leapp.</small>style = 6<small>;</small></h2>
+			<p>Sets the style of the parent window.</p>
+			<p><small>Possible values:</small></p>
+			<table>
+				<tr><td>0</td><td>Window</td></tr>
+				<tr><td>1</td><td>Dialog</td></tr>
+				<tr><td>2</td><td>Sheet</td></tr>
+				<tr><td>3</td><td>Drawer</td></tr>
+				<tr><td>4</td><td>Popup</td></tr>
+				<tr><td>5</td><td>Tool</td></tr>
+				<tr><td>6</td><td>ToolTip</td></tr>
+				<tr><td>7</td><td>SplashScreen</td></tr>
+			</table>
+			<div class="form">
+				<div class="columns">
+					<div class="flex1">
+						<div class="select">
+							<input type="hidden" id="wstyle" value="7">
+							<p>7<small> - SplashScreen</small></p>
+							<div>
+								<a item='0'>0 <small> - Window</small></a>
+								<a item='1'>1 <small> - Dialog</small></a>
+								<a item='2'>2 <small> - Sheet</small></a>
+								<a item='3'>3 <small> - Drawer</small></a>
+								<a item='4'>4 <small> - Popup</small></a>
+								<a item='5'>5 <small> - Tool</small></a>
+								<a item='6'>6 <small> - ToolTip</small></a>
+								<a item='7'>7 <small> - SplashScreen</small></a>
+							</div>
+						</div>
+					</div>
+					<div><button class="changestyle">Set</button></div>
 				</div>
 			</div>
 		</div>
@@ -100,6 +144,8 @@
 				</div>
 			</div>
 		</div>
+		<br>
+		<h1>Methods</h1>
 		<div class="row">
 			<h2><small>leapp.</small>hide()<small>;</small></h2>
 			<p>Hides parent window in tray</p>
@@ -149,37 +195,65 @@
 			<div class="demo">
 				<p id="sizechanged">Resize the window</p>
 			</div>
-			<pre class="code"><code><i class='y'>leapp</i>.<i class='b'>windowResize</i> = <i class='p'>function</i>(w, h){
+			<pre class="code"><code><i class='y'>leapp</i>.<i class='b'>windowResize</i> = <i class='p'>function</i>(width, height){
 <small>...</small>
 }</code></pre>
 		</div>
 		<div class="row">
-			<h2><small>leapp.</small>windowMove(x, y)<small>;</small></h2>
+			<h2><small>leapp.</small>windowMove(left, top)<small>;</small></h2>
 			<p>Sends a signal when moving the parent window</p>
 			<div class="demo">
 				<p id="winmove">Move the window</p>
 			</div>
-			<pre class="code"><code><i class='y'>leapp</i>.<i class='b'>windowMove</i> = <i class='p'>function</i>(x, y){
+			<pre class="code"><code><i class='y'>leapp</i>.<i class='b'>windowMove</i> = <i class='p'>function</i>(left, top){
 <small>...</small>
 }</code></pre>
 		</div>
 		<div class="row">
-			<h2><small>leapp.</small>windowClose()<small>;</small></h2>
+			<h2><small>leapp.</small>onClose()<small>;</small></h2>
 			<p>Sends a signal when the window is closed, return <strong>false</strong> to block the event.</p>
 			<div class="demo">
 				<p id="windowclose">Try closing the parent window.</p>
 			</div>
-			<pre class="code"><code><i class='y'>leapp</i>.<i class='b'>windowClose</i> = <i class='p'>function</i>(){
+			<pre class="code"><code><i class='y'>leapp</i>.<i class='b'>onClose</i> = <i class='p'>function</i>(){
   <i class='p'>return</i> <i class='y'>true</i>;
 }</code></pre>
 		</div>
-		<h1># SQL</h1>
+		<br>
+		<h1># Funtions</h1>
 		<div class="row">
 			<h2><small>leapp.</small>sql(query, callback)<small>;</small></h2>
 			<p>Send sql query to sqllite3</p>
 			<div class="form">
-				<button class="sendsql">Send query</button>
+				<div class="columns">
+					<div class="flex1"><input id="alert" type="text" placeholder="SQL" value="SELECT * FROM users LIMIT 0,20"></div>
+					<div><button class="sendsql">Send query</button></div>
+				</div>
 			</div>
+			<br>
+			<pre class="code"><code><i class='y'>leapp</i>.<i class='b'>sql</i>("SELECT * FROM users", <i class='p'>function</i>(<strong>data</strong>){
+  <i class='y'>console</i>.<i class='b'>log</i>(<strong>data.numRowsAffected</strong>);
+  <i class='y'>console</i>.<i class='b'>log</i>(<strong>data.lastInsertId</strong>);
+  <i class='y'>console</i>.<i class='b'>log</i>(<strong>data.error</strong>);
+  <i class='y'>console</i>.<i class='b'>log</i>(<strong>data.rows</strong>);
+}</code></pre>
+			<table class="sqlinfo">
+
+			</table>
+			<table class="sqlresult">
+			</table>
+		</div>
+		<div class="row">
+			<h2><small>leapp.</small>get(url, data, callback)<small>;</small></h2>
+			<p>Send get request</p>
+			<div class="form">
+				<div class="columns">
+					<div class="flex1"><input id="alert" type="text" placeholder="http://site.ru/example.txt" value="http://leapp.ru"></div>
+					<div><button class="sendsql">Send request</button></div>
+				</div>
+			</div>
+			<br>
+			<textarea name="" id="" class="textresult" readonly placeholder="result..." rows="10"></textarea>
 		</div>
 	</div>
 </body>

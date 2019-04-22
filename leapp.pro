@@ -30,14 +30,14 @@ SOURCES += \
 	viewpage.cpp \
 	tools.cpp \
 	sql.cpp \
-    transport.cpp
+	transport.cpp
 
 HEADERS += \
 		leapp.h \
 	viewpage.h \
 	tools.h \
 	sql.h \
-    transport.h
+	transport.h
 
 FORMS += \
 		leapp.ui

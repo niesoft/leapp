@@ -1,3 +1,4 @@
+@import url("font.css");
 * {
   margin: 0px;
   padding: 0px;
@@ -57,6 +58,11 @@ h2 {
     -ms-flex: 1;
     flex: 1; }
 
+.sqlresult thead td, .sqlinfo thead td {
+  background-color: #272b33;
+  color: #fff;
+  border: none !important; }
+
 .example {
   display: block;
   margin: 0px auto;
@@ -87,6 +93,20 @@ h2 {
     color: rgba(255, 255, 255, 0.4); }
   .code span {
     color: #90AE59; }
+
+.textresult {
+  width: 100%;
+  resize: none;
+  padding: 10px;
+  font-size: 60%;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  border-radius: 3px; }
 
 .row {
   margin-top: 20px;
@@ -128,6 +148,17 @@ h2 {
       background-color: #fff;
       padding: 10px;
       font-style: italic;
+      -webkit-border-radius: 3px;
+      -moz-border-radius: 3px;
+      -ms-border-radius: 3px;
+      border-radius: 3px; }
+  .row table {
+    width: 100%;
+    border-spacing: 10px; }
+    .row table td {
+      padding: 5px 10px;
+      font-size: 90%;
+      border: 1px solid #d1d5dd;
       -webkit-border-radius: 3px;
       -moz-border-radius: 3px;
       -ms-border-radius: 3px;
@@ -193,6 +224,9 @@ h2 {
     -moz-border-radius: 3px;
     -ms-border-radius: 3px;
     border-radius: 3px; }
+    .row .form .select > p > small {
+      font-size: 70%;
+      color: #888; }
   .row .form .select > div {
     background-color: #fff;
     position: absolute;
@@ -210,6 +244,9 @@ h2 {
       -o-transition: 0.3s; }
       .row .form .select > div > a:hover {
         background-color: whitesmoke; }
+      .row .form .select > div > a > small {
+        font-size: 70%;
+        color: #888; }
   .row .form .select:hover > div {
     display: block; }
 
