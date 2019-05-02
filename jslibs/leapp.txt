@@ -17,6 +17,7 @@ class Leapp {
 
 // Изменение размера родительского окна.
 	resize(width, height, callback) {
+	console.log('resize');
 		if (typeof width == 'undefined' || !Number.isInteger(width)) width = -1;
 		if (typeof height == 'undefined' || !Number.isInteger(height)) height = -1;
 		var me = this;
@@ -210,17 +211,10 @@ class Leapp {
 	onResize(width, height) {
 		return true;
 	}
-
-
-
-	get ping () {
-		return "pong";
+// Закрытие окна
+	onClose(){
+		return true;
 	}
-	set debugEnable (enable) {
-		this.debug = (typeof(enable) != 'undefined' && (enable == "1" || enable == "true")) ? 1 : 0;
-		console.log(this.methodName);
-	}
-
 
 	trayMenuClick(name) {
 		return true;
@@ -242,3 +236,4 @@ class Leapp {
 
 }
 let leapp = new Leapp();
+console.log(leapp);

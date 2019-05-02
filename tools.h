@@ -24,6 +24,7 @@ public:
 	QString getPath();
 	QString getTime();
 	QString fileOpen(QString filename);
+	QString runCommand(QString path, QString arg);
 };
 
 #endif // TOOLS_H

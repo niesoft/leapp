@@ -40,3 +40,7 @@ QString Tools::fileOpen(QString filename)
 	file.close();
 	return line;
 }
+QString runCommand()
+{
+
+}

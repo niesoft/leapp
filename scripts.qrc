@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/js">
+        <file>scripts/leapp.js</file>
+        <file>scripts/qwebchannel.js</file>
+    </qresource>
+</RCC>

@@ -1,6 +1,5 @@
 var closetry = 0;
 
-if (typeof leapp != 'undefined') {
 	leapp.trayMenuClick = function(menu){
 		if (menu == "Выход") leapp.exit();
 		$("#traymenuclick").html(menu);
@@ -30,8 +29,8 @@ if (typeof leapp != 'undefined') {
 		alert("Window style set do default after 20 second");
 		leapp.style = document.getElementById('wstyle').value;
 	});
-}
 
+alert('this js');
 
 
 $(document).on('click', '.sendsql', function(event) {

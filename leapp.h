@@ -15,11 +15,15 @@
 #include <QWebEngineScriptCollection>
 #include <QWebChannel>
 #include <QJsonObject>
+#include <QResource>
 #include "viewpage.h"
 #include "tools.h"
 #include "sql.h"
 #include "transport.h"
 
+inline void initMyResource() {
+    Q_INIT_RESOURCE(res);
+}
 
 namespace Ui {
 class Leapp;
@@ -34,6 +38,7 @@ class Leapp : public QMainWindow
 public:
 	explicit Leapp(QWidget *parent = nullptr);
 	~Leapp();
+
 
 	QSize startsize = QSize(640,480);
 	QSize minimalsize = QSize(140,220);

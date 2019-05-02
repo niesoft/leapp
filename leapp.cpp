@@ -5,6 +5,7 @@ Leapp::Leapp(QWidget *parent) :
 	QMainWindow(parent),
 	ui(new Ui::Leapp)
 {
+    initMyResource();
 	page = new ViewPage(this, this);
 	tray = new QSystemTrayIcon();
 	menu = new QMenu("leappMenu");
@@ -57,13 +58,12 @@ void Leapp::loadHtml(QUrl url)
 void Leapp::loadStarted()
 {
 	tools.debug(__FUNCTION__);
-
-	QString line = this->fileOpen(":/scripts/qwebchannel.js");
-	line += this->fileOpen(":/scripts/leapp.js");
+    QString line = this->fileOpen(":/jslibs/qwebchannel.txt");
+    line += this->fileOpen(":/jslibs/leapp.txt");
 	line += this->setProperties();
 
 	QWebEngineScript script_qwebchannel;
-	script_qwebchannel.setInjectionPoint(QWebEngineScript::DocumentCreation);
+    script_qwebchannel.setInjectionPoint(QWebEngineScript::DocumentCreation);
 	script_qwebchannel.setWorldId(QWebEngineScript::MainWorld);
 	script_qwebchannel.setName("qwebchannel.js");
 	script_qwebchannel.setRunsOnSubFrames(true);
@@ -77,6 +77,9 @@ void Leapp::loadProgress()
 void Leapp::loadFinished()
 {
 	tools.debug(__FUNCTION__);
+    this->page->runJavaScript("document.documentElement.outerHTML;", [this](const QVariant &v) {
+        this->tools.debug(__FUNCTION__, v);
+    });
 }
 
 QString Leapp::setProperties(){
@@ -104,11 +107,17 @@ QString Leapp::setProperties(){
 QString Leapp::fileOpen(QString filename)
 {
 	QFile file(filename);
-	file.open(QIODevice::ReadOnly);
-	QTextStream in(&file);
-	in.setCodec("UTF-8");
-	QString line = in.readAll();
+    if(!file.open(QFile::ReadOnly)) {
+        qDebug() << "error: " << file.errorString();
+        qApp->exit(1);
+    }
+    qDebug() << filename;
+    qDebug() << file.size();
+    QTextStream in(&file);
+    in.setCodec("UTF-8");
+    QString line = in.readAll();
 	file.close();
+    if (line.length() < 1) qApp->exit(1);
 	return line;
 }
 // Смена иконки в трее
